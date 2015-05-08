@@ -1,4 +1,4 @@
-# BoostInfo
+# BoostInfo [![Build Status](https://travis-ci.org/zenbro/boost_info.svg?branch=master)](https://travis-ci.org/zenbro/boost_info)
 
 Simple parser for [Boost INFO format](http://www.boost.org/doc/libs/1_42_0/doc/html/boost_propertytree/parsers.html#boost_propertytree.parsers.info_parser).
 
