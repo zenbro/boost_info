@@ -27,8 +27,8 @@ module BoostInfo
             iterate_hash(v, level + 1)
           else
             v = v.to_s
-            # Wrap "values with spaces and /"
-            v = %["#{ v }"] if v[/[\s\/]/]
+            # Wrap "values with spaces, /, :, ., or ,"
+            v = %["#{ v }"] if v[/[\s\/:.,]/]
             @result << ' ' + v + "\n"
             @result << add_indent("}\n", level - 1) if k == hash.keys.last
           end
