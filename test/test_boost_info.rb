@@ -2,17 +2,15 @@ require 'minitest_helper'
 
 class TestBoostInfo < Minitest::Test
   def setup
-    @valid_info = <<-INFO
-      key1 value1
-      key2
-      {
-         key3
-         {
-            key4 "value4 with spaces"
-         }
-         key5 value5
-      }
-    INFO
+    @valid_info = <<INFO
+key1 value1
+key2 {
+  key3 {
+    key4 "value4 with spaces"
+  }
+  key5 value5
+}
+INFO
 
     @invalid_info = <<-INFO
       key1 value1
@@ -20,6 +18,31 @@ class TestBoostInfo < Minitest::Test
       {
     INFO
 
+    @nested_info = <<INFO
+key1 value1
+key2 {
+  key3 {
+    key4 {
+      key5 {
+        key6 value2
+      }
+    }
+  }
+}
+INFO
+
+    @nested_hash = {
+      key1: 'value1',
+      key2: {
+        key3: {
+          key4: {
+            key5: {
+              key6: 'value2'
+            }
+          }
+        }
+      }
+    }
     @info_hash = {
       'key1' => 'value1',
       'key2' => {
@@ -51,11 +74,19 @@ class TestBoostInfo < Minitest::Test
     assert_equal({ x: 'y' }, BoostInfo.parse('x y', symbolize_keys: true))
   end
 
+  def test_parse_nested_info
+    assert_equal @nested_hash, BoostInfo.parse(@nested_info, symbolize_keys: true)
+  end
+
   def test_generate_info_from_hash
-    assert @valid_info, @info_hash.to_info(indent: 2)
+    assert_equal @valid_info, @info_hash.to_info(indent: 2)
+  end
+
+  def test_generate_info_from_nested_hash
+    assert_equal @nested_info, @nested_hash.to_info(indent: 2)
   end
 
   def test_generate_info_from_hash_with_symbols
-    assert 'x y', { x: :y }.to_info
+    assert_equal "x y\n", { x: :y }.to_info
   end
 end

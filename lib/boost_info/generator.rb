@@ -21,16 +21,16 @@ module BoostInfo
       def iterate_hash(hash, level)
         hash.each do |k,v|
           k = k.to_s
-          @result << add_indent(k, level)
           if v.is_a?(Hash)
-            @result << " {\n"
+            # Wrap hash in curly braces
+            @result << add_indent("#{ k } {\n", level)
             iterate_hash(v, level + 1)
+            @result << add_indent("}\n", level)
           else
             v = v.to_s
-            # Wrap "values with spaces, /, :, ., or ,"
-            v = %["#{ v }"] if v[/[\s\/:.,]/]
-            @result << ' ' + v + "\n"
-            @result << add_indent("}\n", level - 1) if k == hash.keys.last
+            # Wrap spaces and special symbols in double quotes
+            v = %["#{ v }"] if v[/[\s\/:;.,]/]
+            @result << add_indent("#{ k } #{ v }\n", level)
           end
         end
       end
