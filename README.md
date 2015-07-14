@@ -27,7 +27,7 @@ BoostInfo.parse(file, options={})
 
 Available options: 
 
-- **symbolize_names**: convert all keys to symbols (default: false)
+- **symbolize_keys**: convert all keys to symbols (default: false)
 
 ### Generating INFO
 
