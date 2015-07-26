@@ -1,4 +1,4 @@
-# BoostInfo [![Build Status](https://travis-ci.org/zenbro/boost_info.svg?branch=master)](https://travis-ci.org/zenbro/boost_info) [![GitHub issues](https://img.shields.io/github/issues/zenbro/boost_info.svg)](https://github.com/zenbro/boost_info/issues)
+# BoostInfo [![GitHub release](https://img.shields.io/github/release/zenbro/boost_info.svg)](https://github.com/zenbro/boost_info/releases) [![Build Status](https://travis-ci.org/zenbro/boost_info.svg?branch=master)](https://travis-ci.org/zenbro/boost_info) [![GitHub issues](https://img.shields.io/github/issues/zenbro/boost_info.svg)](https://github.com/zenbro/boost_info/issues)
 
 Simple parser for [Boost INFO format](http://www.boost.org/doc/libs/1_42_0/doc/html/boost_propertytree/parsers.html#boost_propertytree.parsers.info_parser).
 
