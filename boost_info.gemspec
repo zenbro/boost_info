@@ -5,6 +5,7 @@ require 'boost_info/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "boost_info"
+  spec.description   = "Simple parser for Boost INFO format."
   spec.version       = BoostInfo::VERSION
   spec.authors       = ["Igor Vetrov", "Alexander Tsygankov"]
   spec.email         = ["capybarov@gmail.com"]

@@ -1,6 +1,6 @@
 require 'minitest_helper'
 
-class TestBoostInfo < Minitest::Test
+class BoostInfoTest < Minitest::Test
   def setup
     @valid_info = <<INFO
 key1 value1
@@ -31,6 +31,19 @@ key2 {
 }
 INFO
 
+    @info_with_empty_section = <<INFO
+key1 {
+}
+INFO
+
+    @info_with_dup = <<INFO
+key1 value1
+key2 {
+  key3 a
+  key3 b
+}
+INFO
+
     @nested_hash = {
       key1: 'value1',
       key2: {
@@ -52,6 +65,13 @@ INFO
         'key5' => 'value5'
       }
     }
+
+    @info_hash_without_dup = {
+      'key1' => 'value1',
+      'key2' => {
+        'key3' => 'b'
+      }
+    }
   end
 
   def test_parse_valid_info
@@ -59,7 +79,7 @@ INFO
   end
 
   def test_parse_invalid_info
-    assert_raises BoostInfo::ParseError do
+    assert_raises BoostInfo::Parser::ParseError do
       BoostInfo.parse(@invalid_info)
     end
   end
@@ -78,6 +98,15 @@ INFO
     assert_equal @nested_hash, BoostInfo.parse(@nested_info, symbolize_keys: true)
   end
 
+  def test_parse_info_with_empty_section
+    h = { key1: {} }
+    assert_equal h,  BoostInfo.parse(@info_with_empty_section, symbolize_keys: true)
+  end
+
+  def test_parse_info_with_duplications
+    assert_equal @info_hash_without_dup,  BoostInfo.parse(@info_with_dup)
+  end
+
   def test_generate_info_from_hash
     assert_equal @valid_info, @info_hash.to_info(indent: 2)
   end
@@ -88,5 +117,9 @@ INFO
 
   def test_generate_info_from_hash_with_symbols
     assert_equal "x y\n", { x: :y }.to_info
+  end
+
+  def test_generate_info_with_empty_section
+    assert_equal "x { }\n", { x: {} }.to_info
   end
 end
