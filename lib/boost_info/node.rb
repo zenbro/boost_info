@@ -34,7 +34,7 @@ module BoostInfo
         node = get(next_node_key).first
         node.find_by_path(path) if node
       elsif path.size == 1
-        last_key = path.last.to_s
+        last_key = path.last
         get(last_key).first
       end
     end

@@ -6,6 +6,7 @@ class NodeTest < Minitest::Test
     @node_a = BoostInfo::Node.new(key: :a, value: 1)
     @node_b = BoostInfo::Node.new(key: :b, value: 2)
     @node_c = BoostInfo::Node.new(key: :c, value: 3)
+    @node_d = BoostInfo::Node.new(key: :d, value: 4)
   end
 
   def test_inserting_nodes
@@ -128,6 +129,17 @@ class NodeTest < Minitest::Test
     @node_b.insert_node(@node_c)
 
     assert_equal @root_node.find_by_path([:a, :b, :c]), @node_c
+  end
+
+  def test_find_by_path_with_regexp
+    @root_node.insert_node(@node_a)
+    @node_a.insert_node(@node_b)
+    @node_b.insert_node(@node_c)
+    @node_b.insert_node(@node_d)
+    @node_c.key = :x1
+    @node_d.key = :x2
+
+    assert_equal @root_node.find_by_path([:a, /b/, /x\d/]), @node_c
   end
 
   def test_auto_insert
