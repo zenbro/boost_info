@@ -64,7 +64,6 @@ INFO
     }
   end
 
-
   def test_parse_without_nesting_nodes
     root_node = BoostInfo::Parser.from_info(@simple_config)
     assert_equal root_node.childrens.map(&:key), %w(a b c c d)
@@ -105,5 +104,15 @@ INFO
     assert_equal root_node.childrens.map(&:key), %w(a b c d)
     assert_equal node_b.childrens.map(&:key), %w(c d)
     assert_equal node_d.childrens.map(&:key), %w(e f g h)
+  end
+
+  def test_root_node_from_empy_hash
+    root_node = BoostInfo::Parser.from_hash({})
+    assert_nil root_node.childrens
+  end
+
+  def test_root_node_from_empy_string
+    root_node = BoostInfo::Parser.from_info('')
+    assert_nil root_node.childrens
   end
 end

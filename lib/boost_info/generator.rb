@@ -11,12 +11,19 @@ module BoostInfo
     end
 
     def to_info
-      build_info(@root_node, 0).join("\n") + "\n"
+      lines = build_info(@root_node, 0)
+      if lines.empty?
+        ''
+      else
+        lines.join("\n") + "\n"
+      end
     end
 
     private
 
     def build_hash(parent_node)
+      return {} unless parent_node.childrens
+
       hash = {}
       parent_node.childrens.each do |node|
         key = @opts[:symbolize_keys] ? node.key.to_sym : node.key
@@ -30,6 +37,7 @@ module BoostInfo
     end
 
     def build_info(parent_node, level)
+      return [] unless parent_node.childrens
       lines = []
       last_node_index = parent_node.childrens.size - 1
       parent_node.childrens.each_with_index do |node,index|

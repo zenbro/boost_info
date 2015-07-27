@@ -74,6 +74,10 @@ INFO
     }
   end
 
+  def test_parse_empty_info
+    assert_equal({}, BoostInfo.parse(''))
+  end
+
   def test_parse_valid_info
     assert_equal @info_hash, BoostInfo.parse(@valid_info)
   end
@@ -104,7 +108,11 @@ INFO
   end
 
   def test_parse_info_with_duplications
-    assert_equal @info_hash_without_dup,  BoostInfo.parse(@info_with_dup)
+    assert_equal @info_hash_without_dup, BoostInfo.parse(@info_with_dup)
+  end
+
+  def test_generate_info_from_empty_hash
+    assert_equal '', {}.to_info
   end
 
   def test_generate_info_from_hash
