@@ -94,6 +94,10 @@ INFO
     end
   end
 
+  def test_parse_with_without_symbolize_keys
+    assert_equal({ 'x' => 'y', 'z' => nil }, BoostInfo.parse("x y\nz\n"))
+  end
+
   def test_parse_with_symbolized_keys
     assert_equal({ x: 'y' }, BoostInfo.parse('x y', symbolize_keys: true))
   end

@@ -31,20 +31,26 @@ b {
     f
     g { }
     h 1
-  ;comment
   }
 }
-c { ; comment
-  g { a b }
+c {
+  g {
+    a b
+  }
   d x
-} ; commment
+}
 d 1
 INFO
   end
 
-  def test_generate_hash
+  def test_generate_same_hash
     root_node = BoostInfo::Parser.from_info(@source)
     assert_equal @hash, root_node.to_h(symbolize_keys: true)
+  end
+
+  def test_generate_same_string
+    root_node = BoostInfo::Parser.from_info(@source)
+    assert_equal @source, root_node.to_info(indent: 2)
   end
 
 end

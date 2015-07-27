@@ -60,7 +60,7 @@ module BoostInfo
 
     def add_indent(string, level)
       indent = @opts[:indent] * level
-      "#{' ' * indent if indent > 0}#{string}"
+      "#{' ' * indent if indent > 0}#{string.strip}"
     end
 
     def wrap_in_quotes(value)
