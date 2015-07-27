@@ -24,6 +24,11 @@ module BoostInfo
     end
 
     def find_by_path(path, params={})
+      path_copy = path.dup
+      traverse_path(path_copy, params)
+    end
+
+    def traverse_path(path, params={})
       if path.size > 1
         next_node_key = path.shift
         node = get(next_node_key).first

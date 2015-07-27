@@ -114,6 +114,14 @@ class NodeTest < Minitest::Test
     assert_nil @root_node.find_by_path([:a, :b, :c])
   end
 
+  def test_path_unchanged_after_find_by
+    expected_path = [:a, :b, :c]
+    actual_path = expected_path.dup
+    @root_node.find_by_path(actual_path)
+
+    assert_equal expected_path, actual_path
+  end
+
   def test_find_by_existing_path
     @root_node.insert_node(@node_a)
     @node_a.insert_node(@node_b)
