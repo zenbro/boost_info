@@ -40,6 +40,8 @@ module BoostInfo
     end
 
     def find_by_key(key, params={})
+      return [] unless childrens
+
       result = []
       childrens.each do |node|
         if key.is_a?(Regexp)
