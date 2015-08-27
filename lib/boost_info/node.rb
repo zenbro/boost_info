@@ -75,7 +75,7 @@ module BoostInfo
     def create_path(path, params={})
       return self if path.empty?
 
-      params[:force] = true unless params.key?(:force)
+      params[:force] = false unless params.key?(:force)
 
       current_node = self
       path.each do |new_key|
