@@ -75,19 +75,21 @@ module BoostInfo
     def create_path(path, params={})
       return self if path.empty?
 
-      params[:force] = false unless params.key?(:force)
+      params[:force] = true unless params.key?(:force)
 
       current_node = self
       path.each do |new_key|
         existing_nodes = current_node.get(new_key)
-        unless existing_nodes.empty?
-          if params[:force]
-            current_node.childrens.delete_if do |node|
-              node.key == new_key.to_s
-            end
-          end
-        end
-        current_node = current_node.insert(new_key, nil, params)
+        current_node = if existing_nodes.empty?
+                         current_node.insert(new_key, nil, params)
+                       else
+                         # force - использовать существующие ноды
+                         if params[:force]
+                           existing_nodes.first
+                         else
+                           current_node.insert(new_key, nil, params)
+                         end
+                       end
       end
       current_node
     end
@@ -119,8 +121,6 @@ module BoostInfo
         insert_node_before(params[:before], node)
       elsif params[:prepend]
         @childrens.unshift(node)
-      elsif params[:append]
-        @childrens.push(node)
       else
         @childrens << node
       end

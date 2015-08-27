@@ -143,15 +143,14 @@ class NodeTest < Minitest::Test
   end
 
   def test_path_creation_with_force
-    last_node = @root_node.create_path([:a, :b, :c], force: true)
-    node_c = @root_node.find_by_path([:a, :b, :c], force: true)
-    assert_equal last_node, node_c
-    assert_equal last_node, node_c
+    @root_node.create_path([:a], force: true)
+    node_a2 = @root_node.create_path([:a], force: true)
+    assert_equal @root_node.childrens, [node_a2]
   end
 
   def test_path_creation_without_force
-    node_a1 = @root_node.create_path([:a])
-    node_a2 = @root_node.create_path([:a])
+    node_a1 = @root_node.create_path([:a], force: false)
+    node_a2 = @root_node.create_path([:a], force: false)
     assert_equal @root_node.childrens, [node_a1, node_a2]
   end
 
@@ -173,7 +172,8 @@ class NodeTest < Minitest::Test
 
   def test_auto_insert_node
     @root_node.auto_insert([:a, :b, :c], @node_a)
+    @root_node.auto_insert([:a, :b, :c], @node_b)
     node_c = @root_node.find_by_path([:a, :b, :c])
-    assert_equal  node_c.childrens, [@node_a]
+    assert_equal  node_c.childrens, [@node_a, @node_b]
   end
 end
