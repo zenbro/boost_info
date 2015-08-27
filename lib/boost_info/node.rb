@@ -72,22 +72,35 @@ module BoostInfo
       parent_childrens.reject { |c| c == self }
     end
 
-    def auto_insert(path, value, params={})
-      params[:force] ||= true
-      if params[:force]
-        params[:delete_if] = ->(node) { node.childrens.nil? }
-      end
+    def create_path(path, params={})
+      return self if path.empty?
+
+      params[:force] = true unless params.key?(:force)
 
       current_node = self
       path.each do |new_key|
-        existing_node = current_node.get(new_key).first
-        current_node = if existing_node && existing_node.childrens
-                        existing_node
-                      else
-                        current_node.insert(new_key, value, params)
-                      end
+        existing_nodes = current_node.get(new_key)
+        unless existing_nodes.empty?
+          if params[:force]
+            current_node.childrens.delete_if do |node|
+              node.key == new_key.to_s
+            end
+          end
+        end
+        current_node = current_node.insert(new_key, nil, params)
       end
       current_node
+    end
+
+    def auto_insert(path, value, params={})
+      last_node = create_path(path, params)
+      new_node = if value.is_a?(BoostInfo::Node)
+                   last_node.insert_node(value, params)
+                 else
+                   last_node.value = value
+                   last_node
+                 end
+      new_node
     end
 
     def insert(key, value, params={})
@@ -99,7 +112,6 @@ module BoostInfo
     def insert_node(node, params={})
       node.parent = self
       @childrens ||= []
-      @childrens.delete_if(&params[:delete_if]) if params[:delete_if]
 
       if params[:after]
         insert_node_after(params[:after], node)
@@ -107,6 +119,8 @@ module BoostInfo
         insert_node_before(params[:before], node)
       elsif params[:prepend]
         @childrens.unshift(node)
+      elsif params[:append]
+        @childrens.push(node)
       else
         @childrens << node
       end
